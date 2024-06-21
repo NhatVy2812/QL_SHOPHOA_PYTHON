@@ -1,0 +1,6 @@
+{% autoescape off %}
+Hi {{ user.username }},
+
+Vui lòng click vào link dưới đây để hoàn thành việc xác minh:
+{{ protocol }}://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+{% endautoescape %}

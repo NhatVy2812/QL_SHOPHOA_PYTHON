@@ -1,0 +1,109 @@
+{% extends "pages/layout.html" %}
+{% block title %}
+Register
+{% endblock %}
+{% block content %}
+{%load static %} 
+
+<body>
+    <!-- Breadcrumb Area Start Here -->
+    <div class="breadcrumbs-area position-relative">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="breadcrumb-content position-relative section-content">
+                        <h3 class="title-3">Đăng nhập-Đăng ký</h3>
+                        <ul>
+                            <li><a href="{% url 'home' %}">Trang chủ</a></li>
+                            <li>Đăng nhập-Đăng ký</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End Here -->
+
+    <!-- Register Area Start Here -->
+    <div class="login-register-area mt-no-text">
+        <div class="container container-default-2 custom-area">
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-custom">
+                    <div class="login-register-wrapper">
+                        <div class="section-content text-center mb-5">
+                            <h2 class="title-4 mb-2">Tạo tài khoản</h2>
+                            <p class="desc-content">Vui lòng đăng ký bằng cách sử dụng chi tiết tài khoản dưới đây.</p>
+                        </div>
+                        <form action="." method="post">
+                            {% csrf_token %}
+                            {{ form.non_field_errors }}
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="single-input-item mb-2">
+                                            <label for="first_name">Họ</label>
+                                            {{form.first_name}}
+                                            {{ form.first_name.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div class="single-input-item mb-2">
+                                            <label for="last_name">Tên</label>
+                                            {{form.last_name}}
+                                            {{ form.last_name.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <!-- <div class="col-sm-6">
+                                        <div class="single-input-item mb-2">
+                                            <label for="phone_number">Số điện thoại</label>
+                                            {{form.phone_number}}
+                                        </div>
+                                    </div> -->
+                                    <div class="col-sm">
+                                        <div class="single-input-item mb-2">
+                                            <label for="email">Email</label>
+                                            {{form.email}}
+                                            {{ form.email.errors }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="single-input-item mb-2">
+                                        <label for="username">Tên đăng nhập</label>
+                                        {{form.username}}
+                                        {{ form.username.errors }}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="single-input-item mb-2">
+                                            <label for="password1">Mật khẩu</label>
+                                            {{form.password1}}
+                                            {{ form.password1.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="single-input-item mb-1">
+                                            <label for="password2">Xác nhận mật khẩu</label>
+                                            {{form.password2}}
+                                            {{ form.password2.errors }}
+                                        </div>
+                                    </div>
+                                    <div class="single-input-item mb-1">
+                                        <input class="btn flosun-button secondary-btn theme-color rounded-0" type="submit" value="Đăng Ký" name="dangky">
+                                        <div><p>Đã có tài khoản? <a class="fw-bold" href="index.php?page=login">Đăng nhập tại đây</a></p></div>
+                                    </div>
+                                    {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register Area End Here -->
+</body>
+{% endblock %}

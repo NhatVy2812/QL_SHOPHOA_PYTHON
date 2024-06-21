@@ -1,0 +1,30 @@
+{% extends "pages/layout.html" %}
+{% block title %}
+Checkout
+{% endblock %}
+{% block content %}
+{%load static %} 
+<div class="breadcrumbs-area position-relative">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb-content position-relative section-content">
+                    <h3 class="title-3">
+                        <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">Thanh toán thành công.</font>
+                            <font style="vertical-align: inherit;">Cảm ơn bạn đã mua hàng</font>
+                        </font>
+                    </h3>
+                    <ul>
+                        <li><a href="{% url 'home' %}">
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">Trang chủ</font>
+                                </font>
+                            </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

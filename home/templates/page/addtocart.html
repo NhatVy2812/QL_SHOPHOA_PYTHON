@@ -1,0 +1,169 @@
+{% extends "pages/layout.html" %}
+{% block title %}
+Shopping Cart
+{% endblock %}
+{% block content %}
+{% load static %}
+<div class="breadcrumbs-area position-relative">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb-content position-relative section-content">
+                    <h3 class="title-3">Shopping Cart</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li>Shopping Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cart-main-wrapper mt-no-text">
+    <div class="container custom-area">
+        <div class="row">
+            <div class="col-lg-12 col-custom">
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail">Hình ảnh</th>
+                                <th class="pro-title">Sản phẩm</th>
+                                <th class="pro-price">Giá</th>
+                                <th class="pro-quantity">Số lượng</th>
+                                <th class="pro-subtotal">Tổng cộng</th>
+                                <th class="pro-remove">Di dời</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if cart %}
+                            {% for item in cart %}
+                            <tr data-item-id="{{ item.id }}">
+                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" src="{% static 'assets/images/' %}{{ item.sanpham.HinhAnh }}" alt="Sản phẩm"></a></td>
+                                <td class="pro-title"><a href="#">{{ item.sanpham.TenSP }}</a></td>
+                                <td class="pro-price"><span>{{ item.sanpham.DonGia }}</span></td>
+                                <td class="pro-quantity">
+                                    <div class="quantity">
+                                        <div class="cart-plus-minus">
+                                            <input class="cart-plus-minus-box" id="quantity" value="{{ item.soluong }}" type="number" min="1">
+                                            <div class="minus-cart btn" pid="{{ item.sanpham.MaSP }}">-</div>
+                                            <div class="plus-cart btn" pid="{{ item.sanpham.MaSP }}">+</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="pro-subtotal tong_tien" data-item-id="{{ item.id }}"><span>{{ item.tong_tien }}</span></td>
+                                <td class="pro-remove"><a href="#"><i class="lnr lnr-trash"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="6"><h1 class="text-center mb-5">Không có sản phẩm nào</h1></td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td colspan="4"><button type="button" id="update-cart-btn" class="btn flosun-button primary-btn rounded-0 black-btn">Cập nhật giỏ hàng</button></td>
+                                <td></td>
+                                <td><a href="#" id="clear-cart-btn" class="btn flosun-button primary-btn rounded-0 black-btn">Xóa giỏ hàng</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cart-update-option d-block d-md-flex justify-content-between">
+                    <div class="apply-coupon-wrapper"></div>
+                    <div class="cart-update mt-sm-16"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-5 ml-auto col-custom">
+                <div class="cart-calculator-wrapper">
+                    <div class="cart-calculate-items">
+                        <h3>Tổng số giỏ hàng</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr class="total">
+                                        <td>Tổng cộng</td>
+                                        <td class="total-amount" id="total_amount">{{ tong|floatformat:"0"|default:"0" }} VNĐ</td>
+                                    </tr>
+                                    <tr>
+                                        <td><a href="{% url 'checkout' %}" class="btn flosun-button primary-btn rounded-0 black-btn">Tiến hành đặt hàng</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // Xử lý sự kiện khi nhấn nút cập nhật giỏ hàng
+  $('#update-cart-btn').on('click', function(){
+    $('.cart-table tbody tr').each(function(){
+        var id = $(this).data('item-id');
+        var quantity = $(this).find('.cart-plus-minus-box').val();
+
+        // Gửi yêu cầu AJAX để cập nhật số lượng cho mỗi sản phẩm
+        $.ajax({
+            type: "POST",
+            url: "/updatecart/",
+            data: {
+                item_id: id,
+                quantity: quantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(data){
+                // Cập nhật thông tin sản phẩm sau khi cập nhật thành công
+                $('.tong_tien[data-item-id="'+id+'"] span').text(data.tong_tien + " VNĐ");
+                $('#total_amount').text(data.total_amount + " VNĐ");
+            }
+        });
+    });
+  });
+
+  // Xử lý sự kiện khi nhấn nút xóa sản phẩm
+  $('.pro-remove a').on('click', function(e){
+      e.preventDefault();
+      var row = $(this).closest('tr');
+      var id = row.data('item-id');
+
+      // Gửi yêu cầu AJAX để xóa sản phẩm khỏi giỏ hàng
+      $.ajax({
+          type: "POST",
+          url: "/removefromcart/",
+          data: {
+              item_id: id,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(data){
+              // Xóa sản phẩm khỏi giao diện sau khi xóa thành công
+              row.remove();
+              $('#total_amount').text(data.total_amount + " VNĐ");
+          }
+      });
+  });
+
+  // Xử lý sự kiện khi nhấn nút xóa tất cả sản phẩm
+  $('#clear-cart-btn').on('click', function(){
+      // Gửi yêu cầu AJAX để xóa tất cả sản phẩm khỏi giỏ hàng
+      $.ajax({
+          type: "POST",
+          url: "/clearcart/",
+          data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+          },
+          success: function(data){
+              // Xóa tất cả các hàng trong bảng giỏ hàng
+              $('.cart-table tbody').empty();
+              $('#total_amount').text(data.total_amount + " VNĐ");
+          }
+      });
+  });
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "pages/layout_QL.html" %}
+{% block title %}
+Update Order
+{% endblock %}
+{% block content %}
+{% load static %} 
+<div id="layoutSidenav_content">
+<main>
+    <form action="{% url 'order_update' id=order.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+            <h2>Cập Nhật Hóa Đơn</h2>
+            <div class="mb-3">
+                <label for="order_id" class="form-label">Mã Đơn Hàng</label>
+                <input type="text" class="form-control" name="order_id" placeholder="" value="{{ order.id }}" readonly>
+            </div>
+            <div class="mb-3">
+                <label for="khachhang" class="form-label">Khách Hàng</label>
+                <select name="khachhang" id="khachhang" class="form-control">
+                    <option value="0">Chọn khách hàng</option>
+                    {% for kh in khachhang_list %}
+                    <option value="{{ kh.id }}" {% if kh.id == order.khachhang.id %} selected {% endif %}>{{ kh.TenKH }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="sanpham" class="form-label">Sản Phẩm</label>
+                <select name="sanpham" id="sanpham" class="form-control">
+                    <option value="0">Chọn sản phẩm</option>
+                    {% for sp in sanpham_list %}
+                    <option value="{{ sp.MaSP }}" {% if sp.MaSP == order.sanpham.MaSP %} selected {% endif %}>{{ sp.TenSP }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="soluong" class="form-label">Số Lượng</label>
+                <input type="number" class="form-control" name="soluong" placeholder="" value="{{ order.soluong }}">
+            </div>
+            <div class="mb-3">
+                <label for="tinhtrang" class="form-label">Tình Trạng</label>
+                <input type="text" class="form-control" name="tinhtrang" placeholder="" value="{{ order.tinhtrang }}">
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Lưu" class="btn btn-secondary" name=""/>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "pages/layout_QL.html" %}
+{% block title %}
+Login
+{% endblock %}
+{% block content %}
+{%load static %} 
+<div id="layoutSidenav_content">
+<main>
+    <form action="{% url 'khachhang_update' id=item_khachhang.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="container">
+        <h2>KHÁCH HÀNG</h2>
+        <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input type="number" class="form-control" name="id" placeholder="" value="{{item_khachhang.id}}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="TenKH" class="form-label">Tên KH</label>
+            <input type="text" class="form-control" name="TenKH" placeholder="" value="{{item_khachhang.TenKH}}">
+        </div>
+        <div class="mb-3">
+            <label for="DiaChi" class="form-label">Địa Chỉ</label>
+            <input type="text" class="form-control" name="DiaChi" placeholder="" value="{{item_khachhang.DiaChi}}">
+        </div>
+        
+        <div class="mb-3">
+            <label for="DienThoai" class="form-label">Điện Thoại</label>
+            <input type="number" class="form-control" name="DienThoai" placeholder="" value="{{item_khachhang.DienThoai}}">
+        </div>
+        
+        <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-secondary" name=""/>
+        </div>
+    </div>
+    </div>
+
+    </form>
+    
+    
+</main>
+</div>
+{% endblock %}

@@ -1,0 +1,210 @@
+{% extends "pages/layout.html" %}
+{% block title %}
+Checkout
+{% endblock %}
+{% block content %}
+{%load static %} 
+<div class="breadcrumbs-area position-relative">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="breadcrumb-content position-relative section-content">
+                    <h3 class="title-3">
+                        <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">Thủ tục thanh toán</font>
+                        </font>
+                    </h3>
+                    <ul>
+                        <li><a href="index.html">
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">Trang chủ</font>
+                                </font>
+                            </a></li>
+                        <li>
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Thủ tục thanh toán</font>
+                            </font>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+$tong = 0;
+?>
+
+<div class="checkout-area mt-no-text">
+    <div class="container custom-container">
+    <form id="myform" class="" method="get" action="{% url 'thanhtoanthanhcong' %}">
+        {% csrf_token %}
+            <div class="row">
+                <div class="col-lg-6 col-12 col-custom">
+
+                    <div class="checkbox-form">
+                        <h3>
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Chọn địa chỉ giao hàng</font>
+                            </font>
+                        </h3>
+                        <div class="account-details-form">
+                            {%for ad in add %}
+                            <div class="card m-2">
+                                <div class="card-body">
+                                    <h3>Tên: {{ad.TenKH}}</h3>
+                                    <p>Địa Chỉ: {{ad.DiaChi}}</p>
+                                    <p>Điện Thoại: {{ad.DienThoai}}</p>
+                                    <a href="#" class="btn btn-primary">Update</a>
+
+                                </div>
+
+                            </div>
+                            <div class="form-check mt-2 mb-5">
+                                <input type="radio" class="form-check-input" name="custid" id="custadd{{forloop.counter}}" value="{{ad.id}}">
+                                <label for="custadd{{forloop.counter}}" class="form-check-label fw-bold">
+                                    Địa chỉ: {{forloop.counter}}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        
+                        </div>
+                        
+                    </div>
+
+                </div>
+                <div class="col-lg-6 col-12 col-custom">
+                    <div class="your-order">
+                        <h3>
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">Đơn hàng của bạn</font>
+                            </font>
+                        </h3>
+                        <div class="your-order-table table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="cart-product-name">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">Sản phẩm</font>
+                                            </font>
+                                        </th>
+                                        <th class="cart-product-total">
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">Tổng cộng</font>
+                                            </font>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in cart %}
+                                            <tr class="cart_item">
+                                               
+                                                <td class="cart-product-name">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">{{item.sanpham.TenSP}}</font>
+                                                    </font><strong class="product-quantity">
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">
+                                                                × {{item.soluong}}
+
+                                                            </font>
+                                                        </font>
+                                                    </strong>
+                                                </td>
+                                                
+                                                <td class="cart-product-total text-center"><span class="amount">
+                                                        <font style="vertical-align: inherit;">
+                                                            <font style="vertical-align: inherit;">
+                                                                {{item.tong_tien}}
+                                                            </font>
+                                                        </font>
+                                                    </span></td>
+                                            </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                                <tfoot>
+                                    <tr class="order-total">
+                                        <th>
+                                            <font style="vertical-align: inherit;">
+                                                <font style="vertical-align: inherit;">Tổng tiền</font>
+                                            </font>
+                                        </th>
+                                        <td class="text-center"><strong><span class="amount">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">
+                                                            {{ tong|floatformat:"0"|default:"0" }} VNĐ</font>
+                                                    </font>
+                                                </span></strong></td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                        <div class="payment-method">
+                            <div class="payment-accordion">
+                                <div id="accordion">
+                                    <div class="card">
+                                        <div class="card-header" id="#payment-1">
+                                            <h5 class="panel-title mb-3">
+                                                <a href="#" class="" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">
+                                                            Thanh toán khi nhận hàng
+                                                        </font>
+                                                    </font>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                            <div class="card-body mb-2 mt-2">
+                                                <p>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">Thực hiện thanh toán trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng ID đơn hàng của bạn làm tài liệu tham khảo thanh toán. Đơn đặt hàng của bạn sẽ không được chuyển cho đến khi tiền đã được xóa trong tài khoản của chúng tôi.</font>
+                                                    </font>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header" id="#payment-2">
+                                            <h5 class="panel-title mb-3">
+                                                <a href="#" class="collapsed" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">
+                                                            Thanh toán trực tuyến
+                                                        </font>
+                                                    </font>
+                                                </a>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                            <div class="card-body mb-2 mt-2">
+                                                <p>
+                                                    <font style="vertical-align: inherit;">
+                                                        <font style="vertical-align: inherit;">Thực hiện thanh toán trực tiếp vào tài khoản ngân hàng của chúng tôi. Vui lòng sử dụng ID đơn hàng của bạn làm tài liệu tham khảo thanh toán. Đơn đặt hàng của bạn sẽ không được chuyển cho đến khi tiền đã được xóa trong tài khoản của chúng tôi.</font>
+                                                    </font>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="order-button-payment">
+                                    <p>Quý khách muốn thay đổi thông tin vui lòng nhấn <a href="index.php?page=taikhoancuatoi" class="text-primary ">vào đây</a></p>
+                                    <button id="cash-payment-btn" type="submit" name="btndathang" class="btn flosun-button secondary-btn black-color rounded-0 w-100">
+                                        <font style="vertical-align: inherit;">
+                                            <font style="vertical-align: inherit;">Thanh toán</font>
+                                        </font>
+                                    </button>
+    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

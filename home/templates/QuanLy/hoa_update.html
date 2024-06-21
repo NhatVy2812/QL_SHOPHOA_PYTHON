@@ -1,0 +1,72 @@
+{% extends "pages/layout_QL.html" %}
+{% block title %}
+Login
+{% endblock %}
+{% block content %}
+{%load static %} 
+<div id="layoutSidenav_content">
+<main>
+    <form action="{% url 'hoa_update' masp=item_sanpham.MaSP %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <div class="container">
+        <h2>SẢN PHẨM</h2>
+        <div class="mb-3">
+            <label for="MaSP" class="form-label">Mã Hoa</label>
+            <input type="text" class="form-control" name="MaSP" placeholder="" value="{{item_sanpham.MaSP}}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="TenSP" class="form-label">Tên Hoa</label>
+            <input type="text" class="form-control" name="TenSP" placeholder="" value="{{item_sanpham.TenSP}}">
+        </div>
+        <div class="mb-3">
+            <label for="HinhAnh" class="form-label">Hình Ảnh</label><br>
+            <!-- <input type="text" class="form-control" name="Hinh_anh" placeholder="" value=""> -->
+            <img src="{% static 'assets/images/' %}{{ item_sanpham.HinhAnh }}" alt="" width="80px"><br>
+            <input type="file" name="HinhAnh" id="">
+        </div>
+       
+        <div class="mb-3">
+            <label for="DonGia" class="form-label">Đơn Giá</label>
+            <input type="number" class="form-control" name="DonGia" placeholder="" value="{{item_sanpham.DonGia}}">
+        </div>
+        <div class="mb-3">
+            <label for="SoLuong" class="form-label">Số Lượng</label>
+            <input type="number" class="form-control" name="SoLuong" placeholder="" value="{{item_sanpham.SoLuong}}">
+        </div>
+        <div class="mb-3">
+            <label for="MoTa" class="form-label">Mô Tả</label>
+            <input type="text" class="form-control" name="MoTa" placeholder="" value="{{item_sanpham.MoTa}}">
+        </div>
+        <div class="mb-3">
+            <label for="MaMau" class="form-label">Mã Màu</label>
+            <!-- <input type="text" class="form-control" name="Ma_Loai" placeholder="" value=""> -->
+            <select name="MaMau" id="" class="form-control">
+                <option value="0">Chọn mã màu</option>
+                {% for mausac in mausac_list %}
+                <option value="{{ mausac.MaMau }}" {% if mausac.MaMau == item_sanpham.MaMau.MaMau %} selected {% endif %}>{{ mausac.TenMau }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="MaLoai" class="form-label">Mã Loại</label>
+            <!-- <input type="text" class="form-control" name="Ma_Loai" placeholder="" value=""> -->
+            <select name="MaLoai" id="" class="form-control">
+                <option value="0">Chọn mã loại</option>
+                    {% for loai in loai_list %}
+                        <option value="{{ loai.MaLoai }}" {% if loai.MaLoai == item_sanpham.MaLoai.MaLoai %} selected {% endif %}>{{ loai.TenLoai }}</option>
+                    {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-secondary" name=""/>
+        </div>
+    </div>
+    </div>
+
+    </form>
+    
+    
+</main>
+</div>
+{% endblock %}
